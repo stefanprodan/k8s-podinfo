@@ -35,11 +35,17 @@ Common labels
 */}}
 {{- define "podinfo.labels" -}}
 helm.sh/chart: {{ include "podinfo.chart" . }}
+app.kubernetes.io/component: podinfo
+app.kubernetes.io/instance: {{ .Release.Name }}
+app.kubernetes.io/part-of: {{ template "podinfo.name" . }}
 {{ include "podinfo.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- if .Values.customLabels }}
+{{ toYaml .Values.customLabels }}
+{{- end }}
 {{- end }}
 
 {{/*
